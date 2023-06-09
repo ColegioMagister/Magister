@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-06-2023 a las 06:21:11
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 7.4.29
+-- Tiempo de generación: 07-06-2023 a las 19:37:09
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `assessment` (
   `id` int(11) NOT NULL,
-  `id_student` int(11) NOT NULL,
+  `id_section` int(11) NOT NULL,
   `id_subject` int(11) NOT NULL,
   `id_assessment_type` int(11) NOT NULL,
   `grade` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -45,7 +45,7 @@ CREATE TABLE `assessment_type` (
   `id` int(11) NOT NULL,
   `assessment_name` varchar(50) NOT NULL,
   `value` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE `attendances` (
   `id_schedule` int(11) NOT NULL,
   `id_student` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -69,6 +69,7 @@ CREATE TABLE `attendances` (
 CREATE TABLE `employees` (
   `id` int(11) NOT NULL,
   `id_school` int(11) NOT NULL,
+  `id_role` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -76,7 +77,15 @@ CREATE TABLE `employees` (
   `url_img` varchar(250) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `employees`
+--
+
+INSERT INTO `employees` (`id`, `id_school`, `id_role`, `name`, `lastname`, `email`, `phone_number`, `url_img`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'Adminsitradfor1', 'apellido adminmistrador', 'admin@gmail.com', '8436465854', 'no hay', '2023-06-07 17:10:13', '2023-06-07 17:10:13'),
+(2, 1, 2, 'Mattew', 'profesor apellido', 'mattew@colegio.com', '976255488', 'no hay', '2023-06-07 17:10:13', '2023-06-07 17:10:13');
 
 -- --------------------------------------------------------
 
@@ -87,7 +96,7 @@ CREATE TABLE `employees` (
 CREATE TABLE `levels` (
   `id` int(11) NOT NULL,
   `description` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -101,7 +110,26 @@ CREATE TABLE `quotas` (
   `description` varchar(100) NOT NULL,
   `quota_number` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `role_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `role_name`) VALUES
+(1, 'Administrador'),
+(2, 'Profesor');
 
 -- --------------------------------------------------------
 
@@ -116,7 +144,7 @@ CREATE TABLE `schedules` (
   `id_subject` int(11) NOT NULL,
   `start_datetime` datetime NOT NULL,
   `end_datetime` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -133,7 +161,14 @@ CREATE TABLE `school_info` (
   `city` varchar(50) NOT NULL,
   `adress` varchar(100) NOT NULL,
   `url_img` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `school_info`
+--
+
+INSERT INTO `school_info` (`id`, `school_name`, `tax_number`, `email`, `phone_number`, `city`, `adress`, `url_img`) VALUES
+(1, 'Magister', '20004893756', 'magister@gmail.com', '98754385', 'Lima', 'avenidaMagister #345', 'no hay');
 
 -- --------------------------------------------------------
 
@@ -147,7 +182,7 @@ CREATE TABLE `school_periods` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -164,7 +199,7 @@ CREATE TABLE `sections` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `total_amount` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -176,7 +211,7 @@ CREATE TABLE `section_has_subjects` (
   `id` int(11) NOT NULL,
   `id_subject` int(11) NOT NULL,
   `id_section` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -187,7 +222,7 @@ CREATE TABLE `section_has_subjects` (
 CREATE TABLE `section_type` (
   `id` int(11) NOT NULL,
   `section_type` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -206,7 +241,21 @@ CREATE TABLE `student` (
   `url_img` varchar(250) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `student_has_assessments`
+--
+
+CREATE TABLE `student_has_assessments` (
+  `id` int(11) NOT NULL,
+  `id_student` int(11) NOT NULL,
+  `id_assessment` int(11) NOT NULL,
+  `grade` decimal(10,2) NOT NULL,
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -219,7 +268,7 @@ CREATE TABLE `student_in_section` (
   `id_student` int(11) NOT NULL,
   `id_section` int(11) NOT NULL,
   `status` varchar(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -232,7 +281,7 @@ CREATE TABLE `student_quota` (
   `id_student` int(11) NOT NULL,
   `id_quota` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -243,7 +292,17 @@ CREATE TABLE `student_quota` (
 CREATE TABLE `subjects` (
   `id` int(11) NOT NULL,
   `subject_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `subjects`
+--
+
+INSERT INTO `subjects` (`id`, `subject_name`) VALUES
+(1, 'Aritmetica'),
+(2, 'Historia'),
+(3, 'Geografía'),
+(4, 'Trigonometria');
 
 -- --------------------------------------------------------
 
@@ -255,7 +314,16 @@ CREATE TABLE `teacher_has_subjects` (
   `id` int(11) NOT NULL,
   `id_teacher` int(11) NOT NULL,
   `id_subject` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `teacher_has_subjects`
+--
+
+INSERT INTO `teacher_has_subjects` (`id`, `id_teacher`, `id_subject`) VALUES
+(1, 2, 1),
+(2, 2, 3),
+(3, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -267,7 +335,7 @@ CREATE TABLE `teacher_in_sections` (
   `id` int(11) NOT NULL,
   `id_teacher` int(11) NOT NULL,
   `id_section` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -278,23 +346,19 @@ CREATE TABLE `teacher_in_sections` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `id_employee` int(11) NOT NULL,
-  `id_role` int(11) NOT NULL,
   `user_name` varchar(50) NOT NULL,
   `password` varchar(300) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Estructura de tabla para la tabla `user_roles`
+-- Volcado de datos para la tabla `users`
 --
 
-CREATE TABLE `user_roles` (
-  `id` int(11) NOT NULL,
-  `role_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `users` (`id`, `id_employee`, `user_name`, `password`, `created_at`, `updated_at`) VALUES
+(1, 1, 'admin', 'admin', '2023-06-07 17:10:49', '2023-06-07 17:10:49'),
+(2, 2, 'profe', 'profe', '2023-06-07 17:10:49', '2023-06-07 17:10:49');
 
 -- --------------------------------------------------------
 
@@ -305,7 +369,7 @@ CREATE TABLE `user_roles` (
 CREATE TABLE `weekdays` (
   `id` int(11) NOT NULL,
   `day_name` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tablas volcadas
@@ -316,9 +380,9 @@ CREATE TABLE `weekdays` (
 --
 ALTER TABLE `assessment`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_a_id_student` (`id_student`),
   ADD KEY `fk_a_id_subject` (`id_subject`),
-  ADD KEY `fk_a_id_typ_assess` (`id_assessment_type`);
+  ADD KEY `fk_a_id_typ_assess` (`id_assessment_type`),
+  ADD KEY `fk_a_id_section` (`id_section`);
 
 --
 -- Indices de la tabla `assessment_type`
@@ -339,7 +403,8 @@ ALTER TABLE `attendances`
 --
 ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_e_id_school` (`id_school`) USING BTREE;
+  ADD KEY `fk_e_id_school` (`id_school`) USING BTREE,
+  ADD KEY `fk_e_id_role` (`id_role`);
 
 --
 -- Indices de la tabla `levels`
@@ -353,6 +418,12 @@ ALTER TABLE `levels`
 ALTER TABLE `quotas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_in_id_section` (`id_section`);
+
+--
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `schedules`
@@ -405,6 +476,14 @@ ALTER TABLE `student`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `student_has_assessments`
+--
+ALTER TABLE `student_has_assessments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_sa_id_student` (`id_student`),
+  ADD KEY `fk_sa_id_assessment` (`id_assessment`);
+
+--
 -- Indices de la tabla `student_in_section`
 --
 ALTER TABLE `student_in_section`
@@ -447,14 +526,7 @@ ALTER TABLE `teacher_in_sections`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_u_id_employee` (`id_employee`),
-  ADD KEY `fk_u_id_role` (`id_role`);
-
---
--- Indices de la tabla `user_roles`
---
-ALTER TABLE `user_roles`
-  ADD PRIMARY KEY (`id`);
+  ADD KEY `fk_u_id_employee` (`id_employee`);
 
 --
 -- Indices de la tabla `weekdays`
@@ -488,7 +560,7 @@ ALTER TABLE `attendances`
 -- AUTO_INCREMENT de la tabla `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `levels`
@@ -503,6 +575,12 @@ ALTER TABLE `quotas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `schedules`
 --
 ALTER TABLE `schedules`
@@ -512,7 +590,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT de la tabla `school_info`
 --
 ALTER TABLE `school_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `school_periods`
@@ -545,6 +623,12 @@ ALTER TABLE `student`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `student_has_assessments`
+--
+ALTER TABLE `student_has_assessments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `student_in_section`
 --
 ALTER TABLE `student_in_section`
@@ -560,13 +644,13 @@ ALTER TABLE `student_quota`
 -- AUTO_INCREMENT de la tabla `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `teacher_has_subjects`
 --
 ALTER TABLE `teacher_has_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `teacher_in_sections`
@@ -578,13 +662,7 @@ ALTER TABLE `teacher_in_sections`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `user_roles`
---
-ALTER TABLE `user_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `weekdays`
@@ -600,7 +678,7 @@ ALTER TABLE `weekdays`
 -- Filtros para la tabla `assessment`
 --
 ALTER TABLE `assessment`
-  ADD CONSTRAINT `fk_a_id_student` FOREIGN KEY (`id_student`) REFERENCES `student_in_section` (`id`),
+  ADD CONSTRAINT `fk_a_id_section` FOREIGN KEY (`id_section`) REFERENCES `sections` (`id`),
   ADD CONSTRAINT `fk_a_id_subject` FOREIGN KEY (`id_subject`) REFERENCES `subjects` (`id`),
   ADD CONSTRAINT `fk_a_id_typ_assess` FOREIGN KEY (`id_assessment_type`) REFERENCES `assessment_type` (`id`);
 
@@ -615,6 +693,7 @@ ALTER TABLE `attendances`
 -- Filtros para la tabla `employees`
 --
 ALTER TABLE `employees`
+  ADD CONSTRAINT `fk_e_id_role` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`),
   ADD CONSTRAINT `fk_u_id_school` FOREIGN KEY (`id_school`) REFERENCES `school_info` (`id`);
 
 --
@@ -645,6 +724,13 @@ ALTER TABLE `sections`
 ALTER TABLE `section_has_subjects`
   ADD CONSTRAINT `fk_secs_id_section` FOREIGN KEY (`id_section`) REFERENCES `sections` (`id`),
   ADD CONSTRAINT `fk_secs_id_subject` FOREIGN KEY (`id_subject`) REFERENCES `subjects` (`id`);
+
+--
+-- Filtros para la tabla `student_has_assessments`
+--
+ALTER TABLE `student_has_assessments`
+  ADD CONSTRAINT `fk_sa_id_assessment` FOREIGN KEY (`id_assessment`) REFERENCES `assessment` (`id`),
+  ADD CONSTRAINT `fk_sa_id_student` FOREIGN KEY (`id_student`) REFERENCES `student` (`id`);
 
 --
 -- Filtros para la tabla `student_in_section`
@@ -678,8 +764,7 @@ ALTER TABLE `teacher_in_sections`
 -- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `fk_u_id_employee` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id`),
-  ADD CONSTRAINT `fk_u_id_role` FOREIGN KEY (`id_role`) REFERENCES `user_roles` (`id`);
+  ADD CONSTRAINT `fk_u_id_employee` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
